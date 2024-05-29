@@ -65,6 +65,9 @@ sysctl --system
 echo "Installing containerd..." >&2
 apt-get install containerd -y
 # Configures containerd and restarts the service
+if [ ! -d "/etc/containerd" ]; then
+	mkdir -p -m 755 /etc/containerd
+fi
 containerd config default | tee /etc/containerd/config.toml
 sed -e 's/SystemdCgroup = false/SystemdCgroup = true/g' -i /etc/containerd/config.toml
 systemctl restart containerd
